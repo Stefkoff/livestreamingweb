@@ -2,12 +2,14 @@
 
 namespace app\controllers;
 
+use app\models\RegisterForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\User;
 
 class SiteController extends Controller
 {
@@ -90,5 +92,67 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    public function actionRegister(){
+        $form = new RegisterForm();
+        if($form->load(Yii::$app->request->post()) && $form->validate()){
+            if($form->register()){
+                $this->redirect('/');
+            }
+        }
+
+        return $this->render('register', [
+            'form' => $form
+        ]);
+
+    }
+
+    public function actionForgot(){
+        $request = Yii::$app->request;
+
+        $email = $request->post('email', false);
+
+        $success = false;
+        $error = '';
+
+        Yii::info('email: ' . $email);
+
+        if($request->isPost){
+            if($email){
+                $userModel = User::findOne(['email' => $email]);
+
+                /**
+                 * @var $userModel User
+                 */
+
+                Yii::info($userModel);
+
+                if($userModel){
+                    $userModel->accessToken = Yii::$app->security->generateRandomString();
+                    $userModel->save();
+
+                    Yii::$app->mailer->compose()
+                        ->setFrom('admin@liveevents.com')
+                        ->setTo($email)
+                        ->setHtmlBody("<p>Натиснете <a href='" . Yii::$app->urlManager->createAbsoluteUrl([
+                                'site/renewpass', 'token' => $userModel->accessToken
+                            ]) ."'>тук</a> за да възтановите паролат си!</p>")
+                        ->send();
+                    $success = true;
+                } else{
+                    $error = 'Няма съществуващ потребител с имейл: ' . $email;
+                }
+            } else{
+                $error = 'Моля, въведете имейл адрес!';
+            }
+        }
+
+        Yii::info($error);
+
+        return $this->render('forgot', [
+            'success' => $success,
+            'error' => $error
+        ]);
     }
 }

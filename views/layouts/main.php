@@ -33,21 +33,36 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+
+    $items = [
+        ['label' => 'Home', 'url' => ['/site/index']]
+    ];
+
+    if(Yii::$app->user->isGuest){
+        $items[] = ['label' => 'Register', 'url' => ['/site/register']];
+    } else{
+        $items = array_merge($items, [
+            ['label' => 'На живо', 'url' => ['/site/live']],
+            ['label' => 'Програма', 'url' => ['/site/schedule']]
+        ]);
+    }
+
+    $items = array_merge($items, [
+        ['label' => 'About', 'url' => ['/site/about']],
+        ['label' => 'Contact', 'url' => ['/site/contact']],
+        Yii::$app->user->isGuest ?
+            ['label' => 'Login', 'url' => ['/site/login']] :
+            [
+                'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                'url' => ['/site/logout'],
+                'linkOptions' => ['data-method' => 'post']
+            ],
+    ]);
+
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Live 2', 'url' => ['/site/live']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ?
-                ['label' => 'Login', 'url' => ['/site/login']] :
-                [
-                    'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                    'url' => ['/site/logout'],
-                    'linkOptions' => ['data-method' => 'post']
-                ],
-        ],
+        'items' => $items
     ]);
     NavBar::end();
     ?>
