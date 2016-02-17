@@ -158,4 +158,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return true;
     }
+
+
+    public static function dataProvider(){
+
+    }
 }

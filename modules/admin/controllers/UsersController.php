@@ -15,4 +15,8 @@ class UsersController extends BaseAdminController {
         return $this->render('index');
     }
 
+    public function actionEdit(){
+        return $this->renderAjax('_edit');
+    }
+
 }

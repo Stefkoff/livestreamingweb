@@ -23,7 +23,10 @@ AppAsset::register($this);
 </head>
 <body>
 <?php $this->beginBody() ?>
-
+<?php
+yii\bootstrap\Modal::begin(['id' =>'modal']);
+yii\bootstrap\Modal::end();
+?>
 <div class="wrap">
     <?php
     NavBar::begin([
