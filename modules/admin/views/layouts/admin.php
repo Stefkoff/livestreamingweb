@@ -27,47 +27,23 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
+        'brandLabel' => 'Админ Панел',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
 
-    $items = [
-        ['label' => 'Home', 'url' => ['/site/index']]
-    ];
-
-    if(Yii::$app->user->isGuest){
-        $items[] = ['label' => 'Register', 'url' => ['/site/register']];
-    } else{
-        $items = array_merge($items, [
-            ['label' => 'На живо', 'url' => ['/site/live']],
-            ['label' => 'Програма', 'url' => ['/site/schedule']]
-        ]);
-    }
-
-    $items = array_merge($items, [
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']]
-    ]);
+    $items = array();
 
     if(Yii::$app->user->checkAccess(\app\models\Group::GROUP_ADMIN)){
-        $items = array_merge($items, [
-            ['label' => 'Амин панел', 'url' => ['/admin/default/index']]
-        ]);
+        $items[] = ['label' => 'Потребители', 'url' => ['/admin/users/index']];
     }
 
     $items = array_merge($items, [
-        Yii::$app->user->isGuest ?
-            ['label' => 'Login', 'url' => ['/site/login']] :
-            [
-                'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                'url' => ['/site/logout'],
-                'linkOptions' => ['data-method' => 'post']
-            ],
+        ['label' => 'Събития', 'url' => ['/admin/event/index']],
+        ['label' => 'Изход', 'url' => ['/site/index']]
     ]);
-
 
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],

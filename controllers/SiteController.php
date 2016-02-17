@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\RegisterForm;
 use Yii;
 use yii\filters\AccessControl;
+use app\filters\AccessRules;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
@@ -19,6 +20,9 @@ class SiteController extends Controller
             'access' => [
                 'class' => AccessControl::className(),
                 'only' => ['logout'],
+                'ruleConfig' => [
+                    'class' => AccessRules::className()
+                ],
                 'rules' => [
                     [
                         'actions' => ['logout'],
@@ -116,8 +120,6 @@ class SiteController extends Controller
         $success = false;
         $error = '';
 
-        Yii::info('email: ' . $email);
-
         if($request->isPost){
             if($email){
                 $userModel = User::findOne(['email' => $email]);
@@ -125,8 +127,6 @@ class SiteController extends Controller
                 /**
                  * @var $userModel User
                  */
-
-                Yii::info($userModel);
 
                 if($userModel){
                     $userModel->accessToken = Yii::$app->security->generateRandomString();
@@ -139,12 +139,12 @@ class SiteController extends Controller
                                 'site/renewpass', 'token' => $userModel->accessToken
                             ]) ."'>тук</a> за да възтановите паролат си!</p>")
                         ->send();
-                    $success = true;
+                    Yii::$app->session->setFlash('success', 'Изпратихме Ви линк на посоченият имейл, за да последвате процедурата по възобновяване на паролата');
                 } else{
-                    $error = 'Няма съществуващ потребител с имейл: ' . $email;
+                    Yii::$app->session->setFlash('error', 'Няма съществуващ потребител с имейл: <strong>' . $email . '</strong>');
                 }
             } else{
-                $error = 'Моля, въведете имейл адрес!';
+                Yii::$app->user->setFlash('error', 'Моля, въведете имейл адрес!');
             }
         }
 
@@ -154,5 +154,58 @@ class SiteController extends Controller
             'success' => $success,
             'error' => $error
         ]);
+    }
+
+    public function actionRenewpass(){
+        $request = Yii::$app->request;
+        $accessToken = false;
+
+        if($request->isGet){
+            $accessToken = $request->get('token', false);
+        } else if($request->isPost){
+            $accessToken = $request->post('token', false);
+        }
+
+        if($accessToken){
+            $user = User::findIdentityByAccessToken($accessToken);
+
+            if($user){
+                $submit = $request->post('submit', false);
+
+                if($submit){
+                    $newPass = $request->post('new_pass', false);
+                    $rePass = $request->post('re_pass', false);
+
+                    if(!$newPass || !$rePass){
+                        Yii::$app->session->setFlash('error', 'Моля, попълнете всички полета!');
+                        Yii::info(Yii::$app->session->getAllFlashes());
+                    } else{
+                        if($newPass !== $rePass){
+                            Yii::$app->session->setFlash('error', 'Паролите не съвпадат!');
+                        } else{
+                            $userModel = User::findOne($user->getId());
+
+                            /**
+                             * @var $userModel User
+                             */
+
+                            $userModel->password = Yii::$app->security->generatePasswordHash($newPass);
+                            $userModel->accessToken = null;
+                            $userModel->save();
+                            Yii::$app->session->setFlash('success', 'Вашата парола беше сменена <strong>успехно!</strong> Сега вече можете да влезете в системата!');
+                        }
+                    }
+                }
+
+                return $this->render('renew_pass', [
+                    'accessToken' => $accessToken
+                ]);
+
+            } else{
+                $this->redirect('/');
+            }
+        } else{
+            $this->redirect('/');
+        }
     }
 }

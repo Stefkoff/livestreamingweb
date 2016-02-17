@@ -14,6 +14,11 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $authKey
  * @property string $accessToken
+ * @property string $creation_date
+ * @property string $last_login_date
+ * @property string $last_login_ip
+ *
+ * @property GroupMember[] $groupMembers
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -33,9 +38,11 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'password', 'email'], 'required'],
+            [['username', 'password', 'email', 'creation_date'], 'required'],
+            [['creation_date', 'last_login_date'], 'safe'],
             [['username', 'email'], 'string', 'max' => 45],
-            [['password', 'authKey', 'accessToken'], 'string', 'max' => 255]
+            [['password', 'authKey', 'accessToken'], 'string', 'max' => 255],
+            [['last_login_ip'], 'string', 'max' => 25]
         ];
     }
 
@@ -51,7 +58,18 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'email' => 'Email',
             'authKey' => 'Auth Key',
             'accessToken' => 'Access Token',
+            'creation_date' => 'Creation Date',
+            'last_login_date' => 'Last Login Date',
+            'last_login_ip' => 'Last Login Ip',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getGroupMembers()
+    {
+        return $this->hasMany(GroupMember::className(), ['id_user' => 'id']);
     }
 
     public function beforeSave($insert)

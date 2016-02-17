@@ -53,6 +53,8 @@ class RegisterForm extends Model{
             $newUser->username = $this->username;
             $newUser->password = Yii::$app->security->generatePasswordHash($this->password);
             $newUser->email = $this->email;
+            $now = new \DateTime();
+            $newUser->creation_date = $now->format('Y-m-d H:i:s');
             if($newUser->save()){
                 return true;
             }
