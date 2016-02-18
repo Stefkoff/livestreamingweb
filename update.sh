@@ -6,4 +6,6 @@ git reset --hard && git pull
 
 echo "\n\n==> Runing migrations..."
 
+php yii migrate --interactive=0
+
 rm -Rf web/assets/*
