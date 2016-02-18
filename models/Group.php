@@ -17,6 +17,7 @@ class Group extends \yii\db\ActiveRecord
 
     const GROUP_ADMIN = '/level/admin';
     const GROUP_MODELRATOR = '/level/moderator';
+    const GROUP_USER = '/level/user';
 
     /**
      * @inheritdoc
@@ -54,5 +55,17 @@ class Group extends \yii\db\ActiveRecord
     public function getGroupMembers()
     {
         return $this->hasMany(GroupMember::className(), ['id_group' => 'id']);
+    }
+
+    public static function getGroupsArray(){
+        $groups = self::find()->all();
+
+        $result = array();
+
+        foreach($groups as $group){
+            $result[$group->id] = ucfirst(str_replace('/level/', '', $group->name));
+        }
+
+        return $result;
     }
 }

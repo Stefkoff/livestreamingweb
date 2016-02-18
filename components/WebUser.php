@@ -56,8 +56,6 @@ class WebUser extends User{
 
         $result = $command->one();
 
-        Yii::info($result);
-
         return !empty($result);
     }
 

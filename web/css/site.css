@@ -95,3 +95,7 @@ a.desc:after {
     background-color: #f2dede;
     border-color: #ebccd1;
 }
+
+.users #new-user{
+    margin-left: 15px;
+}

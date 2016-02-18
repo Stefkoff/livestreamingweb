@@ -11,6 +11,7 @@ namespace app\models;
 
 use yii\base\Model;
 use Yii;
+use yii\helpers\VarDumper;
 
 class RegisterForm extends Model{
     public $username;
@@ -25,7 +26,18 @@ class RegisterForm extends Model{
             [['username', 'password', 'repPass', 'email'], 'required'],
             // password is validated by validatePassword()
             ['password', 'validatePassword'],
+            [['username', 'email'], 'validateNewUser' ],
         ];
+    }
+
+    public function validateNewUser($attr, $param){
+        $user = User::findOne([
+            $attr => $this->$attr
+        ]);
+
+        if($user){
+            $this->addError($attr, 'Вече съществува потребител с ' . $attr .': ' . $this->$attr);
+        }
     }
 
     public function attributeLabels()
@@ -51,12 +63,15 @@ class RegisterForm extends Model{
         if($this->validate()){
             $newUser = new User();
             $newUser->username = $this->username;
-            $newUser->password = Yii::$app->security->generatePasswordHash($this->password);
             $newUser->email = $this->email;
             $now = new \DateTime();
             $newUser->creation_date = $now->format('Y-m-d H:i:s');
+            $newUser->password = Yii::$app->security->generatePasswordHash($this->password);
+            $newUser->setScenario(User::SCENARIO_SELF_REGISTER);
             if($newUser->save()){
                 return true;
+            } else{
+                Yii::info(VarDumper::dumpAsString($newUser->errors));
             }
         }
 

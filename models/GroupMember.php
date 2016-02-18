@@ -11,7 +11,7 @@ use Yii;
  * @property integer $id_group
  * @property integer $id_user
  *
- * @property Group $idGroup
+ * @property Group $Group
  * @property User $idUser
  */
 class GroupMember extends \yii\db\ActiveRecord
@@ -49,7 +49,7 @@ class GroupMember extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdGroup()
+    public function getGroup()
     {
         return $this->hasOne(Group::className(), ['id' => 'id_group']);
     }

@@ -31,6 +31,10 @@ class m160217_052636_CREATE_TABLES_group_AND_group_member extends Migration
             'name' => '/level/moderator'
         ]);
 
+        $this->insert('group', [
+            'name' => '/level/user'
+        ]);
+
         $this->insert('user', [
             'username' => 'admin',
             'email' => 'admin@live.com',

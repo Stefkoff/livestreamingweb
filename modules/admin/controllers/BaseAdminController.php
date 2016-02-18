@@ -10,10 +10,10 @@ namespace app\modules\admin\controllers;
 
 use app\filters\AccessRules;
 use yii\filters\AccessControl;
-use yii\web\Controller;
+use app\components\BaseController;
 use Yii;
 
-class BaseAdminController extends Controller{
+class BaseAdminController extends BaseController{
 
 
     protected $roles;

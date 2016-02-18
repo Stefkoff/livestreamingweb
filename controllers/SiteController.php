@@ -6,13 +6,13 @@ use app\models\RegisterForm;
 use Yii;
 use yii\filters\AccessControl;
 use app\filters\AccessRules;
-use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\User;
+use app\components\BaseController;
 
-class SiteController extends Controller
+class SiteController extends BaseController
 {
     public function behaviors()
     {
@@ -148,8 +148,6 @@ class SiteController extends Controller
             }
         }
 
-        Yii::info($error);
-
         return $this->render('forgot', [
             'success' => $success,
             'error' => $error
@@ -178,7 +176,6 @@ class SiteController extends Controller
 
                     if(!$newPass || !$rePass){
                         Yii::$app->session->setFlash('error', 'Моля, попълнете всички полета!');
-                        Yii::info(Yii::$app->session->getAllFlashes());
                     } else{
                         if($newPass !== $rePass){
                             Yii::$app->session->setFlash('error', 'Паролите не съвпадат!');

@@ -32,11 +32,7 @@ class FlashMessagesWidget extends Widget{
     public function init()
     {
         parent::init();
-
         $this->messages = Yii::$app->getSession()->getAllFlashes(true);
-
-        Yii::info($this->messages);
-
     }
 
     public function run()

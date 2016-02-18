@@ -169,6 +169,7 @@
         }, 
         
         __addFocusCatchers: function(parentHandle) {
+            console.log(parentHandle);
             parentHandle.prepend(new FocusCatcher(this.__handle, true));
             parentHandle.append(new FocusCatcher(this.__handle, false));
         }, 

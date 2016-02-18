@@ -12,6 +12,9 @@ $config = [
         ],
     ],
     'components' => [
+        'time' => [
+            'class' => 'app\components\Time'
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'wegmmvio ernfguiwnerufhnweuifhwef9we8 fhweuhnfweuifhn',
@@ -40,6 +43,7 @@ $config = [
                 [
                     'class' => 'yii\log\FileTarget',
                     'levels' => ['error', 'warning', 'info'],
+                    'logVars' => [null],
                 ],
             ],
         ],

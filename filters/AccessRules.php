@@ -19,8 +19,6 @@ class AccessRules extends AccessRule {
             return true;
         }
 
-        Yii::info($this->roles);
-
         foreach ($this->roles as $role){
             if($role === 'admin' ) {
                 if (Yii::$app->user->isAdmin()) {

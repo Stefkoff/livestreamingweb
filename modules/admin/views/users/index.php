@@ -15,52 +15,75 @@ $this->title = 'Потребители';
 $this->params['breadcrumbs'][] = ['label' => 'Админ панел', 'url' => '/admin/default/index'];
 $this->params['breadcrumbs'][] = $this->title;
 
-
 $dataProvide = new ActiveDataProvider([
     'query' => \app\models\User::find(),
     'pagination' => [
         'pageSize' => 20
     ]
 ]);
+?>
+<div class="users" >
+    <div class="row">
+        <?= Html::a('Нов', Yii::$app->urlManager->createUrl('admin/users/new'), [
+            'class' => 'btn btn-info open-dialog',
+            'id' => 'new-user'
+        ]) ?>
+    </div>
+    <br>
+    <?php
 
-echo \yii\grid\GridView::widget([
-    'dataProvider' => $dataProvide,
-    'columns' => [
-        'username',
-        'email',
-        'creation_date',
-        'last_login_date',
-        'last_login_ip',
-        [
-            'class' => 'yii\grid\ActionColumn',
-            'template' => '{update} {delete}',
-            'buttons' => [
-                'update' => function ($url, $model, $key) {
-                    $options = [
-                        'title' => Yii::t('yii', 'Update'),
-                        'aria-label' => Yii::t('yii', 'Update'),
-                        'data-pjax' => '0',
-                        'class' => 'open-dialog'
-                    ];
-                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
-                },
-                'delete' => function ($url, $model, $key) {
-                    $options = [
-                        'title' => Yii::t('yii', 'Delete'),
-                        'aria-label' => Yii::t('yii', 'Delete'),
-                        'class' => 'open-dialog',
-                        'data-pjax' => '0',
-                    ];
-                    return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, $options);
+    echo \yii\grid\GridView::widget([
+        'dataProvider' => $dataProvide,
+        'columns' => [
+            'username',
+            'email',
+            [
+                'header' => 'Дата на регистриране',
+                'value' => function($data){
+                    return Yii::$app->time->toLocal($data->creation_date);
                 }
             ],
-        ],
-    ]]);
+            [
+                'header' => 'Последно влизане',
+                'value' => function($data){
+                    if(!empty($data->last_login_date)){
+                        return Yii::$app->time->toLocal($data->last_login_date);
+                    } else{
+                        return 'Все още не е влизъл';
+                    }
+                }
+            ],
+            'last_login_ip',
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{edit} {delete}',
+                'buttons' => [
+                    'edit' => function ($url, $model, $key) {
+                        $options = [
+                            'title' => Yii::t('yii', 'Update'),
+                            'aria-label' => Yii::t('yii', 'Update'),
+                            'data-pjax' => '0',
+                            'class' => 'open-dialog'
+                        ];
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                    },
+                    'delete' => function ($url, $model, $key) {
+                        $options = [
+                            'title' => Yii::t('yii', 'Delete'),
+                            'aria-label' => Yii::t('yii', 'Delete'),
+                            'class' => 'open-dialog',
+                            'data-pjax' => '0',
+                        ];
+                        return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url, $options);
+                    }
+                ],
+            ],
+        ]]);
 
-?>
-
+    ?>
+</div>
 <script type="text/javascript">
     $(function(){
-        $(document).controls();
+
     });
 </script>

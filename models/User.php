@@ -24,6 +24,9 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
 
     const SALT = 'fwergwegqwegqeg';
+    const SCENARIO_SELF_REGISTER = 'selfRegister';
+    const SCENARIO_UPDATE = 'update';
+    const SCENARIO_INSERT = 'insert';
     /**
      * @inheritdoc
      */
@@ -38,12 +41,24 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'password', 'email', 'creation_date'], 'required'],
+            [['username', 'email'], 'required', 'on' => [self::SCENARIO_DEFAULT, self::SCENARIO_SELF_REGISTER]],
+            ['password', 'required', 'except' => 'updatePassword'],
             [['creation_date', 'last_login_date'], 'safe'],
             [['username', 'email'], 'string', 'max' => 45],
             [['password', 'authKey', 'accessToken'], 'string', 'max' => 255],
-            [['last_login_ip'], 'string', 'max' => 25]
+            [['last_login_ip'], 'string', 'max' => 25],
+            [['username', 'email'], 'validateNewUser', 'on' => [self::SCENARIO_INSERT, self::SCENARIO_SELF_REGISTER] ],
         ];
+    }
+
+    public function validateNewUser($attr, $param){
+        $user = self::findOne([
+            $attr => $this->$attr
+        ]);
+
+        if($user){
+            $this->addError($attr, 'Вече съществува потребител с ' . $attr .': ' . $this->$attr);
+        }
     }
 
     /**
@@ -77,11 +92,38 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
         if(parent::beforeSave($insert)){
             if($this->isNewRecord){
                 $this->authKey = Yii::$app->security->generateRandomString();
+                $this->creation_date = Yii::$app->time->getUTCNow();
+            } else{
+                if($this->getScenario() === 'updatePassword'){
+                    $this->password = Yii::$app->security->generatePasswordHash($this->password);
+                }
             }
             return true;
         }
 
         return false;
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        if($insert){
+            if($this->getScenario() === self::SCENARIO_SELF_REGISTER){
+                $usersGroup = Group::findOne([
+                    'name' => Group::GROUP_USER
+                ]);
+
+                /**
+                 * @var $usersGroup Group
+                 */
+
+                if($usersGroup){
+                    $groupMember = new GroupMember();
+                    $groupMember->id_group = $usersGroup->id;
+                    $groupMember->id_user = $this->id;
+                    $groupMember->save();
+                }
+            }
+        }
     }
 
     public static function findByUsername($username){
@@ -157,10 +199,5 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     public function validateAuthKey($authKey)
     {
         return true;
-    }
-
-
-    public static function dataProvider(){
-
     }
 }
