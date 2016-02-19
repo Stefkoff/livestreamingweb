@@ -8,8 +8,18 @@
 
 namespace app\commands;
 
+use app\models\Setting;
+use yii\console\Controller;
 
-class MaintenanceController
-{
+class MaintenanceController extends Controller{
+    public function actionUp(){
+        Setting::set('maintenance', '1');
+        echo "Maintenance mode ACTIVATED\n";
+    }
+
+    public function actionDown(){
+        Setting::set('maintenance', '0');
+        echo "Maintenance mode DEACTIVATED\n";
+    }
 
 }
