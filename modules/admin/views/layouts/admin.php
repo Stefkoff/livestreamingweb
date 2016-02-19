@@ -19,6 +19,7 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     <?php $this->head() ?>
 </head>
 <body>
@@ -41,6 +42,7 @@ yii\bootstrap\Modal::end();
 
     if(Yii::$app->user->checkAccess(\app\models\Group::GROUP_ADMIN)){
         $items[] = ['label' => 'Потребители', 'url' => ['/admin/users/index']];
+        $items[] = ['label' => 'Настройки', 'url' => ['/admin/settings/index']];
     }
 
     $items = array_merge($items, [

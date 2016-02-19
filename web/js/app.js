@@ -4,6 +4,8 @@
 
 $(function(){
     $(document).controls();
+
+
     $(document).delegate(".modal", "dialog2.content-update", function() {
         var e = $(this);
 

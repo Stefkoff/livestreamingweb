@@ -22,7 +22,7 @@ class AppAsset extends AssetBundle
     );
     public $css = [
         'css/site.css',
-        'css/jquery.dialog2.css'
+        'css/jquery.dialog2.css',
     ];
     public $js = [
         'js/jquery.forms.js',

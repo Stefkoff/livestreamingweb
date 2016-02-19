@@ -205,4 +205,9 @@ class SiteController extends BaseController
             $this->redirect('/');
         }
     }
+
+    public function actionMaintenance(){
+        $this->layout = false;
+        return $this->render('maintenance');
+    }
 }
