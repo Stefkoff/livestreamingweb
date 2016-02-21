@@ -193,4 +193,14 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     {
         return true;
     }
+
+    public function encodeData(){
+        $result = [];
+
+        foreach($this->getAttributes() as $key => $value){
+            $result[$key] = $value;
+        }
+
+        return $result;
+    }
 }

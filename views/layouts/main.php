@@ -35,12 +35,12 @@ AppAsset::register($this);
     ]);
 
     $items = [
-        ['label' => 'Home', 'url' => ['/site/index']]
+        ['label' => 'Начало', 'url' => ['/site/index']]
     ];
 
     if(Yii::$app->user->isGuest){
         if($this->settings['stop_registrations'] != '1'){
-            $items[] = ['label' => 'Register', 'url' => ['/site/register']];
+            $items[] = ['label' => 'Регистрация', 'url' => ['/site/register']];
         }
     } else{
         $items = array_merge($items, [
@@ -50,8 +50,7 @@ AppAsset::register($this);
     }
 
     $items = array_merge($items, [
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']]
+        ['label' => 'За нас', 'url' => ['/site/about']],
     ]);
 
     if(Yii::$app->user->checkAccess(\app\models\Group::GROUP_ADMIN)){
@@ -62,9 +61,9 @@ AppAsset::register($this);
 
     $items = array_merge($items, [
         Yii::$app->user->isGuest ?
-            ['label' => 'Login', 'url' => ['/site/login']] :
+            ['label' => 'Вход', 'url' => ['/site/login']] :
             [
-                'label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                'label' => 'Изход (' . Yii::$app->user->identity->username . ')',
                 'url' => ['/site/logout'],
                 'linkOptions' => ['data-method' => 'post']
             ],

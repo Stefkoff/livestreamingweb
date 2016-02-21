@@ -25,11 +25,13 @@ class AppAsset extends AssetBundle
         'css/jquery.dialog2.css',
     ];
     public $js = [
+        'js/main.js',
         'js/jquery.forms.js',
         'js/jquery.controls.js',
         'js/jquery.dialog2.js',
         'js/jquery.dialog2.helpers.js',
         'js/app.js',
+        'js/jquery.noty.packaged.min.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

@@ -240,4 +240,30 @@ class SiteController extends BaseController
 
         $this->redirect('/');
     }
+
+    public function actionAjax(){
+        if(Yii::$app->request->isAjax){
+
+            $result = [
+                'isGuest' => true
+            ];
+
+            if(!Yii::$app->user->isGuest){
+                $userModel = User::findOne(Yii::$app->user->id);
+
+                /**
+                 * @var $userModel User
+                 */
+
+                if($userModel){
+                    $result['isGuest'] = false;
+                    $result = array_merge($result, $userModel->encodeData());
+                }
+            }
+
+            $result = array_merge($result, Setting::getAll());
+
+            $this->sendJson($result);
+        }
+    }
 }

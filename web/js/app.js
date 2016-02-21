@@ -5,6 +5,8 @@
 $(function(){
     $(document).controls();
 
+    var site = new Site({});
+
 
     $(document).delegate(".modal", "dialog2.content-update", function() {
         var e = $(this);

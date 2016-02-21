@@ -44,4 +44,9 @@ class BaseController extends Controller {
     protected function log($data){
         Yii::info(VarDumper::dumpAsString($data));
     }
+
+    protected function sendJson($data){
+        echo json_encode($data);
+        Yii::$app->end();
+    }
 }
