@@ -12,15 +12,25 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use app\components\FlashMessagesWidget;
 
-$this->title = 'Register';
+$this->title = 'Регистрация';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <div class="site-register">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please iff out the following fields to register:</p>
+    <?= FlashMessagesWidget::widget([
+        'type' => [
+            'error',
+            'success'
+        ],
+        'default' => [
+            'type' => 'info',
+            'message' => "<p>Моля, попълнете полетата за регистрация:</p>"
+        ]
+    ]) ?>
 
     <?php
     $activeForm = ActiveForm::begin([

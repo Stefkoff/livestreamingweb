@@ -34,7 +34,7 @@ yii\bootstrap\Modal::end();
         'brandLabel' => 'Админ Панел',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
+            'class' => 'navbar-inverse',
         ],
     ]);
 

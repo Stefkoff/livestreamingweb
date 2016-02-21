@@ -12,6 +12,9 @@ $config = [
         ],
     ],
     'components' => [
+        'view' => [
+            'class' => 'app\components\View'
+        ],
         'time' => [
             'class' => 'app\components\Time'
         ],

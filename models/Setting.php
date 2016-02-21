@@ -18,7 +18,10 @@ class Setting extends \yii\db\ActiveRecord
 
     private static $allowedSettings = [
         'maintenance',
-        'notifications'
+        'notifications',
+        'show_panel_events',
+        'stop_registrations',
+        'send_confirmation_email'
     ];
 
 

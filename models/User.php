@@ -17,6 +17,7 @@ use yii\web\IdentityInterface;
  * @property string $creation_date
  * @property string $last_login_date
  * @property string $last_login_ip
+ * @property integer $is_confirmed
  *
  * @property GroupMember[] $groupMembers
  */
@@ -44,21 +45,12 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             [['username', 'email'], 'required', 'on' => [self::SCENARIO_DEFAULT, self::SCENARIO_SELF_REGISTER]],
             ['password', 'required', 'except' => 'updatePassword'],
             [['creation_date', 'last_login_date'], 'safe'],
+            [['is_confirmed'], 'integer'],
             [['username', 'email'], 'string', 'max' => 45],
             [['password', 'authKey', 'accessToken'], 'string', 'max' => 255],
             [['last_login_ip'], 'string', 'max' => 25],
-            [['username', 'email'], 'validateNewUser', 'on' => [self::SCENARIO_INSERT, self::SCENARIO_SELF_REGISTER] ],
+            [['username', 'email'], 'unique', 'on' => [self::SCENARIO_INSERT, self::SCENARIO_SELF_REGISTER] ],
         ];
-    }
-
-    public function validateNewUser($attr, $param){
-        $user = self::findOne([
-            $attr => $this->$attr
-        ]);
-
-        if($user){
-            $this->addError($attr, 'Вече съществува потребител с ' . $attr .': ' . $this->$attr);
-        }
     }
 
     /**
@@ -76,6 +68,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
             'creation_date' => 'Creation Date',
             'last_login_date' => 'Last Login Date',
             'last_login_ip' => 'Last Login Ip',
+            'is_confirmed' => 'Is Confirmed',
         ];
     }
 

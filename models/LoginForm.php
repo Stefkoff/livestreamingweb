@@ -57,7 +57,12 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            if($this->getUser()->is_confirmed == 1){
+                return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600*24*30 : 0);
+            } else{
+                Yii::$app->user->setFlash('error', 'Вашата регистрация не е потвърдена. Моля проверете за имейл за потвърждение на регистрация!');
+                return false;
+            }
         }
         return false;
     }

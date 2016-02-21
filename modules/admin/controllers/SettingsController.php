@@ -16,6 +16,7 @@ class SettingsController extends BaseAdminController {
         $request = Yii::$app->request;
 
         if($request->post('submit', false)){
+            Yii::$app->user->setFlash('success', 'Настройките са записани <strong>усепешно!</strong>');
             Setting::saveMultiple($request->post());
         }
 

@@ -11,6 +11,7 @@ use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\User;
 use app\components\BaseController;
+use app\models\Setting;
 
 class SiteController extends BaseController
 {
@@ -102,7 +103,9 @@ class SiteController extends BaseController
         $form = new RegisterForm();
         if($form->load(Yii::$app->request->post()) && $form->validate()){
             if($form->register()){
-                $this->redirect('/');
+                if(Setting::get('send_confirmation_email', 0) == 0) {
+                    Yii::$app->user->setFlash('success', '<strong>Поздравления</strong>! Успешно се регистрирахте в сайта!');
+                }
             }
         }
 
@@ -209,5 +212,32 @@ class SiteController extends BaseController
     public function actionMaintenance(){
         $this->layout = false;
         return $this->render('maintenance');
+    }
+
+    public function actionConfirm(){
+        $request = Yii::$app->request;
+
+        $authKey = $request->get('authKey', false);
+
+        if($authKey){
+            $userModel = User::findOne([
+                'authKey' => $authKey
+            ]);
+
+            /**
+             * @var $userModel User
+             */
+
+            if($userModel->is_confirmed == 0){
+                if($userModel){
+                    $userModel->is_confirmed = 1;
+                    if($userModel->save()){
+                        Yii::$app->user->login($userModel);
+                    }
+                }
+            }
+        }
+
+        $this->redirect('/');
     }
 }

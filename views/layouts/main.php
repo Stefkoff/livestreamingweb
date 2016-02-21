@@ -1,6 +1,6 @@
 <?php
 
-/* @var $this \yii\web\View */
+/* @var $this app\components\View */
 /* @var $content string */
 
 use yii\helpers\Html;
@@ -39,7 +39,9 @@ AppAsset::register($this);
     ];
 
     if(Yii::$app->user->isGuest){
-        $items[] = ['label' => 'Register', 'url' => ['/site/register']];
+        if($this->settings['stop_registrations'] != '1'){
+            $items[] = ['label' => 'Register', 'url' => ['/site/register']];
+        }
     } else{
         $items = array_merge($items, [
             ['label' => 'На живо', 'url' => ['/site/live']],
@@ -79,18 +81,7 @@ AppAsset::register($this);
 <div class="container-fluid text-center">
     <div class="row content">
         <div class="col-sm-2 sidenav">
-            <div class="row">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3>Новини</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="row">
-                            test
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?php if($this->settings['show_panel_events'] == '1'): ?>
             <div class="row">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
@@ -103,6 +94,7 @@ AppAsset::register($this);
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
         </div>
         <div class="col-sm-8 text-left">
             <?= $content ?>
