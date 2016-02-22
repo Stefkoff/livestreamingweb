@@ -39,7 +39,7 @@ AppAsset::register($this);
     ];
 
     if(Yii::$app->user->isGuest){
-        if($this->settings['stop_registrations'] != '1'){
+        if(isset($this->settings['show_panel_events']) && $this->settings['stop_registrations'] != '1'){
             $items[] = ['label' => 'Регистрация', 'url' => ['/site/register']];
         }
     } else{
