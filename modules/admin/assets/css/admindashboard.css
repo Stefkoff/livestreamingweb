@@ -1,0 +1,23 @@
+.users-widget{
+    background-color: #C6C6C6;
+    border-radius: 10px;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+
+.users-widget .header{
+    padding: 5px;
+    background-color: #AC4B4B;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: whitesmoke;
+    border-bottom: 1px solid;
+}
+
+.users-widget .content{
+    padding: 5px;
+}
+
+.users-widget .row{
+    margin-right: 0;
+}

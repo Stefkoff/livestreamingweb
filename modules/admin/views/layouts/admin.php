@@ -9,7 +9,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
-AppAsset::register($this);
+//AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -38,7 +38,9 @@ yii\bootstrap\Modal::end();
         ],
     ]);
 
-    $items = array();
+    $items = [
+        ['label' => 'Dashboard', 'url' => ['/admin/default/index']]
+    ];
 
     if(Yii::$app->user->checkAccess(\app\models\Group::GROUP_ADMIN)){
         $items[] = ['label' => 'Потребители', 'url' => ['/admin/users/index']];
