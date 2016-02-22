@@ -2,19 +2,20 @@
  * Created by Georgi on 2/22/2016.
  */
 var __Socket = null;
-socket = false;
 
-(function($){
-    __Socket = function(){
+(function(){
+    __Socket = function(options){
         this.__socket = null;
+        this.options = null;
 
-        this.init();
+        this.init(options);
     };
 
     __Socket.prototype = {
-        init: function(){
+        init: function(options){
+            this.options = options;
             try{
-                this.__socket = new WebSocket('ws://localhost:8080');
+                this.__socket = new WebSocket('ws://' + this.options.host + ':8080');
 
                 this.__socket.onmessage = function(e){
                     $(document).trigger('socket-message', [e.data]);
@@ -55,14 +56,6 @@ socket = false;
             } else{
                 this.__socket.send(JSON.stringify(data));
             }
-        },
-
-        onMessage: function(func){
-            if(typeof func === "function"){
-                this.__socket.onmessage = func;
-            }
         }
     };
-
-    socket = new __Socket();
-})(jQuery);
+})();

@@ -14,7 +14,6 @@ HOST = window.location.origin;
 
         this.data = {};
         this.page = null;
-        this.socket = null;
 
         this.init(options);
     };
@@ -41,11 +40,6 @@ HOST = window.location.origin;
                 if(this.page.search('register') < 0 && this.page.search('login') < 0) {
                     this.showRegisterAlert();
                 }
-            }
-
-            try{
-                this.socket = new WebSocket('ws://localhost:8080');
-            } catch (e){
             }
         },
 

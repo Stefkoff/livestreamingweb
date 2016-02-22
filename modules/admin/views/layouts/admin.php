@@ -20,6 +20,12 @@ use app\assets\AppAsset;
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+    <script src="../../js/socket.js"></script>
+    <script type="text/javascript">
+        socket = new __Socket({
+            host: '<?= Yii::$app->params['socketHost'] ?>'
+        });
+    </script>
     <?php $this->head() ?>
 </head>
 <body>

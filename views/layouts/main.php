@@ -19,6 +19,12 @@ AppAsset::register($this);
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
+    <script src="/js/socket.js"></script>
+    <script type="text/javascript">
+        socket = new __Socket({
+            host: '<?= Yii::$app->params['socketHost'] ?>'
+        });
+    </script>
     <?php $this->head() ?>
 </head>
 <body>

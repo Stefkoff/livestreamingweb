@@ -2,6 +2,12 @@
 
 $params = require(__DIR__ . '/params.php');
 
+if(file_exists(__DIR__ . '/params-devel.php')){
+    $develParams = require(__DIR__ . '/params-devel.php');
+
+    $params = array_merge($params, $develParams);
+}
+
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
