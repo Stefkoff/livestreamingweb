@@ -80,7 +80,7 @@ AppAsset::register($this);
 <div class="container-fluid text-center">
     <div class="row content">
         <div class="col-sm-2 sidenav">
-            <?php if($this->settings['show_panel_events'] == '1'): ?>
+            <?php if(isset($this->settings['show_panel_events']) && $this->settings['show_panel_events'] == '1'): ?>
             <div class="row">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
