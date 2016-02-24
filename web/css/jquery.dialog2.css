@@ -1,11 +1,11 @@
 .modal {
-    top: 20%;
+    top: 20% !important;
     margin: 0 0 0 -280px;
     width: 600px;
     margin-left: 35%;
     min-width: 300px;
     background: whitesmoke;
-    bottom: inherit;
+    bottom: inherit !important;
 }
 
 .modal.loading .modal-header .loader {

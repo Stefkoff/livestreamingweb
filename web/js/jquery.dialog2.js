@@ -169,7 +169,6 @@
         }, 
         
         __addFocusCatchers: function(parentHandle) {
-            console.log(parentHandle);
             parentHandle.prepend(new FocusCatcher(this.__handle, true));
             parentHandle.append(new FocusCatcher(this.__handle, false));
         }, 
@@ -866,4 +865,22 @@
             }
         });
     };
+
+    $(document).delegate(".modal", "dialog2.content-update", function() {
+        var e = $(this);
+
+        var autoclose = e.find("a.auto-close");
+        if (autoclose.length > 0) {
+            e.find(".modal-body").dialog2("close");
+
+            var href = autoclose.attr('href');
+            if (href) {
+                window.location.href = href;
+            }
+        }
+
+        if(autoclose.hasClass('reload')){
+            location.reload();
+        }
+    });
 })(jQuery);

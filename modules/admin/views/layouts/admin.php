@@ -9,7 +9,8 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
-//AppAsset::register($this);
+
+\app\assets\Dialog2Assets::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -30,10 +31,6 @@ use app\assets\AppAsset;
 </head>
 <body>
 <?php $this->beginBody() ?>
-<?php
-yii\bootstrap\Modal::begin(['id' =>'modal']);
-yii\bootstrap\Modal::end();
-?>
 <div class="wrap">
     <?php
     NavBar::begin([
@@ -82,6 +79,11 @@ yii\bootstrap\Modal::end();
 </footer>
 
 <?php $this->endBody() ?>
+<script type="text/javascript">
+    $(function(){
+        $(document).controls();
+    });
+</script>
 </body>
 </html>
 <?php $this->endPage() ?>

@@ -8,6 +8,10 @@
 
 namespace app\modules\admin\controllers;
 
+use app\models\Server;
+use Yii;
+use app\models\Event;
+
 
 class EventController extends BaseAdminController {
     public function init()
@@ -19,5 +23,36 @@ class EventController extends BaseAdminController {
 
     public function actionIndex(){
         return $this->render('index');
+    }
+
+    public function actionEdit(){
+        $request = Yii::$app->request;
+
+        $eventModel = null;
+        $id = $request->get('id', false);
+
+        if($id){
+            $eventModel = Event::findOne($id);
+        } else{
+            $eventModel = new Event();
+        }
+
+        if($eventModel->load($request->post())){
+            $eventModel->date_added = Yii::$app->time->getUTCNow();
+            $eventModel->on_air = 0;
+            if($eventModel->validate()){
+                if($eventModel->save()){
+                    Yii::$app->user->setFlash('success', 'Събитието е добавено успешно!');
+                    $this->redirect('/admin/event');
+                }
+            }
+        }
+
+        $servers = Server::getServersArray();
+
+        return $this->render('edit', [
+            'eventModel' => $eventModel,
+            'servers' => $servers
+        ]);
     }
 }

@@ -12,11 +12,22 @@ use app\models\Group;
 use app\models\GroupMember;
 use Yii;
 use app\models\User;
+use yii\data\ActiveDataProvider;
 
 class UsersController extends BaseAdminController {
 
     public function actionIndex(){
-        return $this->render('index');
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => \app\models\User::find(),
+            'pagination' => [
+                'pageSize' => 20
+            ]
+        ]);
+
+        return $this->render('index', [
+            'dataProvider' => $dataProvider
+        ]);
     }
 
     public function actionNew(){

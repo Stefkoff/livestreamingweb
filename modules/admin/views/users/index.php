@@ -6,34 +6,27 @@
  * Time: 10:42 PM
  *
  * @var $this yii\web\View
+ * @var $dataProvider \yii\data\ActiveDataProvider
  */
 
-use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 
 $this->title = 'Потребители';
 $this->params['breadcrumbs'][] = ['label' => 'Админ панел', 'url' => '/admin/default/index'];
 $this->params['breadcrumbs'][] = $this->title;
 
-$dataProvide = new ActiveDataProvider([
-    'query' => \app\models\User::find(),
-    'pagination' => [
-        'pageSize' => 20
-    ]
-]);
 ?>
 <div class="users" >
-    <div class="row">
         <?= Html::a('Нов', Yii::$app->urlManager->createUrl('admin/users/new'), [
             'class' => 'btn btn-info open-dialog',
             'id' => 'new-user'
         ]) ?>
-    </div>
+    <br>
     <br>
     <?php
 
     echo \yii\grid\GridView::widget([
-        'dataProvider' => $dataProvide,
+        'dataProvider' => $dataProvider,
         'columns' => [
             'username',
             'email',

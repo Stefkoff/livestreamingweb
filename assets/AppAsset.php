@@ -36,6 +36,6 @@ class AppAsset extends AssetBundle
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
-        'yii\web\JqueryAsset',
+        'app\assets\Dialog2Assets'
     ];
 }

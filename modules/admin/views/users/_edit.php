@@ -25,8 +25,6 @@ $form = ActiveForm::begin([
         ]
     ]
 ]);
-
-Yii::info(\yii\helpers\VarDumper::dumpAsString($userModel->getGroupMembers()));
 ?>
 <h1>Редактиране на потребител</h1>
 
